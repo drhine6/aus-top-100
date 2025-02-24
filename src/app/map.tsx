@@ -1,8 +1,7 @@
 'use client';
 
-import { MapboxGeocoder } from '@mapbox/search-js-web';
 import mapboxgl from 'mapbox-gl';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { GolfCourse } from './page';
 // You'll need to set your Mapbox access token
 // Consider using environment variables for this
@@ -11,11 +10,6 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 export default function Map({ golfCourses }: { golfCourses: GolfCourse[] }) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [error, setError] = useState('');
-  const search = useRef<MapboxGeocoder | null>(null);
-  console.log(golfCourses);
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -71,26 +65,6 @@ export default function Map({ golfCourses }: { golfCourses: GolfCourse[] }) {
   return (
     <div className="relative w-full h-screen">      
       <div ref={mapContainer} className="absolute inset-0" />
-      
-      {/* Loading indicator */}
-      {loading && (
-        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-white/90 px-6 py-4 rounded-full shadow-lg z-10">
-          <div className="text-center">
-            Loading golf courses...
-            <div className="mt-2 text-sm text-gray-600">
-              {progress} / 100
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Error container */}
-      {error && (
-        <div className="fixed bottom-5 left-5 max-w-sm bg-white/90 p-4 rounded-lg shadow-lg z-10 text-red-600 text-sm">
-          {error}
-        </div>
-      )}
-
       {/* Legend */}
       <div className="fixed bottom-5 right-5 bg-white/90 p-4 rounded-lg shadow-lg z-10">
         <div className="space-y-2">
